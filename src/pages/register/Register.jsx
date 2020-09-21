@@ -31,17 +31,35 @@ class Register extends Component {
         let inputPassword = password.current.value
         let obj = {username: inputUsername, password: inputPassword, role: 'user'}
         var inputRegister = this.state.loginData.filter((val)=> val.username == inputUsername)
+        let arrChar = []
+        let letter = /[a-z]/g
         if (!inputPassword || !inputUsername){
             this.setState({inputBlank: true, alreadyRegistered: false})
         }else if(inputRegister.length > 0){
             this.setState({alreadyRegistered: true, inputBlank: false})
         } else if (!inputRegister.length && inputPassword){
-            Axios.post(`${API_URL}/users`, obj)
-            .then(() => {
-                this.props.LoginThunk(inputUsername,inputPassword)
-            }).catch((err) => {
-                console.log(err)
-            })
+            if (inputPassword.length >= 6) {
+                for (let i=0; i<inputPassword.length; i++){
+                    let character = inputPassword.charAt(i)
+                    if (!isNaN(character *1)) {
+                        arrChar.push('number')
+                    } else if (character.toLowerCase().match(letter)) {
+                        arrChar.push('letter')
+                    }
+                };
+                if (arrChar.includes('number') && arrChar.includes('letter')){
+                    Axios.post(`${API_URL}/users`, obj)
+                    .then(() => {
+                        this.props.LoginThunk(inputUsername,inputPassword)
+                    }).catch((err) => {
+                        console.log(err)
+                    })                    
+                }else {
+                    alert('Password harus mengandung Angka dan Huruf')
+                }
+            }else {
+                alert('Password minimal 6 karakter')
+            }
         }
     }
 

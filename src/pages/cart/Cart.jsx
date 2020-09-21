@@ -33,7 +33,7 @@ class Cart extends Component {
         cartFinal:[],
         isLoading: true,
         isOpen: false,
-        paymentMethod: 0,
+        paymentMethod: 'cc',
         ccNumber: createRef()
      }
 
@@ -179,15 +179,28 @@ class Cart extends Component {
     };
     
     onCheckOutClick=()=>{
-        Axios.post(`${API_URL}/transactions`,{
-            status:'WaitingPayment',
-            checkoutDate:new Date().getTime(),
-            userId:this.props.id,
-            tanggalPembayaran:''
-        }).then((res)=>{
+        let obj = {}
+        if (this.state.paymentMethod === 'cc'){
+            obj = {
+                status:'Paid',
+                checkoutDate:new Date().getTime(),
+                userId:this.props.id,
+                metodePembayaran: 'Credit Card',
+                tanggalPembayaran:new Date().getTime()
+            }
+        }else {
+            obj = {
+                status:'Waiting Verification',
+                checkoutDate:new Date().getTime(),
+                userId:this.props.id,
+                metodePembayaran: 'Transfer Bank',
+                tanggalPembayaran:''
+            }
+        }
+        Axios.post(`${API_URL}/transactions`, obj).then((res)=>{
             var arr=[]
             this.state.cartFinal.forEach((val)=>{
-                arr.push(Axios.post(`${API_URL}/transactionsDetails`,{
+                arr.push(Axios.post(`${API_URL}/transactionsdetails`,{
                     transactionId:res.data.id,
                     productId:val.productId,
                     price: parseInt(val.product.price),
@@ -245,7 +258,7 @@ class Cart extends Component {
         if(this.state.isLoading){
             return <div>ABC</div>
         }
-        console.log(this.state.cart)
+        console.log(this.state.paymentMethod)
         if(this.props.role === 'user'){
             return ( 
                 <div>
@@ -291,22 +304,22 @@ class Cart extends Component {
                                 <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                defaultValue={1}
+                                defaultValue={'cc'}
                                 // value={this.state.paymentMethod}
                                 onChange={this.handleChange}
                                 style={{width: '100%'}}
                                 >
-                                <MenuItem value={1}>Kartu Kredit</MenuItem>
-                                <MenuItem value={2}>Transfer</MenuItem>
+                                <MenuItem value={'cc'}>Kartu Kredit</MenuItem>
+                                <MenuItem value={'transfer'}>Transfer</MenuItem>
                                 </Select>
                             </FormControl>
-                            {this.state.paymentMethod === 2 ?
+                            {this.state.paymentMethod === 'transfer' ?
                             <TextField
                                 autoFocus
                                 margin="dense"
                                 id="name"
                                 label="Upload Bukti Pembayaran"
-                                type="file"
+                                type="text"
                                 fullWidth
                             />:
                             <TextField

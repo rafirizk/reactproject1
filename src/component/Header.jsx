@@ -6,8 +6,10 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  Button
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 import {MdFlightTakeoff} from 'react-icons/md'
 import {Link} from 'react-router-dom'
@@ -77,17 +79,28 @@ const NavigationBar = (props) => {
             <Nav className="ml-auto" navbar>
               {
                 props.isLogin ? 
+                <>
                 <NavItem>
                   <Link to="/cart">
                     <Badge badgeContent={countQtyProduct()} color="error" >
                       <ShoppingCartIcon color="disabled" />
                     </Badge>
                   </Link>
-                  <button className="btn mr-2">{props.username}</button>
                   <Link to='/'>
                     <button className={isScroll ? "btn btn-outline-primary" : "btn btn-primary"} onClick={logoutClick} >Logout</button>
                   </Link>
                 </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    {props.username}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem>
+                      Ganti Password
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                </>
                 :
                 <NavItem className='mr-3'>
                   <Link to="/register">

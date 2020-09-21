@@ -6,6 +6,7 @@ import Admin  from './pages/Admin'
 import Login  from './pages/Login';
 import Register from './pages/register/Register'
 import TripList from './pages/tripList/TripList'
+import History from './pages/history'
 import Cart from './pages/cart/Cart'
 import {connect} from 'react-redux'
 import {LoginFunc} from './redux/actions'
@@ -13,6 +14,7 @@ import Axios from 'axios';
 import {API_URL} from './helper/API_URL'
 import NotFound from './pages/NotFound'
 import TripDetail from './pages/tripDetail/TripDetail'
+
 
 function App(props) {
   const [loading, setLoading] = useState(true)
@@ -62,6 +64,7 @@ function App(props) {
         <Route path="/trip/:id" component={TripDetail} />
         <Route path="/register" component={Register} />
         <Route path="/cart" component={Cart} />
+        <Route path="/history" component={History} />
         <Route path="*" component={NotFound} />
       </Switch>
     </div>
