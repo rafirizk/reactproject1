@@ -8,6 +8,7 @@ import Register from './pages/register/Register'
 import TripList from './pages/tripList/TripList'
 import History from './pages/history'
 import Cart from './pages/cart/Cart'
+import PasswordChange from './pages/PasswordChange'
 import {connect} from 'react-redux'
 import {LoginFunc} from './redux/actions'
 import Axios from 'axios';
@@ -65,6 +66,7 @@ function App(props) {
         <Route path="/register" component={Register} />
         <Route path="/cart" component={Cart} />
         <Route path="/history" component={History} />
+        <Route path="/passwordChange" component={PasswordChange} />
         <Route path="*" component={NotFound} />
       </Switch>
     </div>
