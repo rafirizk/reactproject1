@@ -96,7 +96,9 @@ const NavigationBar = (props) => {
                   </DropdownToggle>
                   <DropdownMenu right>
                     <DropdownItem>
-                      Ganti Password
+                      <Link to="/passwordChange">
+                        Ganti Password
+                      </Link>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
