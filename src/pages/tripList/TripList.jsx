@@ -18,7 +18,8 @@ class TripList extends Component {
     componentDidMount(){
         Axios.get(`${API_URL}/products`)
         .then((res) => {
-            this.setState({products:res.data})
+            let finalTrip = res.data.filter(val => val.endDate > new Date().getTime() )
+            this.setState({products:finalTrip})
         })
         .catch((err) => {
             console.log(err)

@@ -52,7 +52,35 @@ class DetailTrip extends Component {
     }
 
     addTripToCart = () => {
-        if (this.props.username === ''){
+        if (this.props.role === 'user') {
+            if (this.state.qty.current.value) {
+                Axios.post(`${API_URL}/carts`,{
+                    userId: this.props.id,
+                    productId: this.state.product.id,
+                    qty: parseInt(this.state.qty.current.value)
+                }).then(()=>{
+                    Axios.get(`${API_URL}/carts`,{
+                        params:{
+                            userId:this.props.id,
+                            _expand:'product'
+                        }
+                    }).then((res)=>{
+                        this.props.AddcartAction(res.data)
+                        alert('berhasil masuk cart')
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
+                })
+            }else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Harap isi jumlah yang mau dibeli!'
+                  })
+            }
+        }else if (this.props.role === 'admin') {
+            alert('Admin tidak bisa beli!')
+        }else if (this.props.username === ''){
             return (
                 Swal.fire({
                     icon: 'error',
@@ -61,24 +89,6 @@ class DetailTrip extends Component {
                     footer: '<a href="/login">Login</a>'
                   })
             )
-        }else{
-            Axios.post(`${API_URL}/carts`,{
-                userId: this.props.id,
-                productId: this.state.product.id,
-                qty: parseInt(this.state.qty.current.value)
-            }).then(()=>{
-                Axios.get(`${API_URL}/carts`,{
-                    params:{
-                        userId:this.props.id,
-                        _expand:'product'
-                    }
-                }).then((res)=>{
-                    this.props.AddcartAction(res.data)
-                    alert('berhasil masuk cart')
-                }).catch((err)=>{
-                    console.log(err)
-                })
-            })
         }
     }
     

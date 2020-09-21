@@ -26,6 +26,15 @@
       "price": "2500000",
       "desc": "Lombok is an island in West Nusa Tenggara province, Indonesia. It forms part of the chain of the Lesser Sunda Islands, with the Lombok Strait separating it from Bali to the west and the Alas Strait between it and Sumbawa to the east. It is roughly circular, with a \"tail\" (Sekotong Peninsula) to the southwest, about 70 kilometres (43 miles) across and a total area of about 4,514 square kilometres (1,743 square miles). The provincial capital and largest city on the island is Mataram.",
       "id": 3
+    },
+    {
+      "name": "Go to Bunaken",
+      "pict": "https://www.pegipegi.com/travel/wp-content/uploads/2015/04/bunaken-.jpg",
+      "startDate": 1600128000000,
+      "endDate": 1600387200000,
+      "price": "5000000",
+      "desc": "Bunaken adalah sebuah pulau seluas 8,08 km² di Teluk Manado, yang terletak di utara pulau Sulawesi, Indonesia. Pulau ini merupakan bagian dari kota Manado, ibu kota provinsi Sulawesi Utara, Indonesia. Pulau Bunaken dapat di tempuh dengan kapal cepat (speed boat) atau kapal sewaan dengan perjalanan sekitar 30 menit dari pelabuhan kota Manado. Di sekitar pulau Bunaken terdapat taman laut Bunaken yang merupakan bagian dari Taman Nasional Bunaken. Taman laut ini memiliki biodiversitas kelautan salah satu yang tertinggi di dunia. Selam scuba menarik banyak pengunjung ke pulau ini. Secara keseluruhan taman laut Bunaken meliputi area seluas 75.265 hektare dengan lima pulau yang berada di dalamnya, yakni Pulau Manado Tua (Manarauw), Pulau Bunaken, Pulau Siladen, Pulau Mantehage berikut beberapa anak pulaunya, dan Pulau Naen. Meskipun meliputi area 75.265 hektare, lokasi penyelaman (diving) hanya terbatas di masing-masing pantai yang mengelilingi kelima pulau itu.",
+      "id": 4
     }
   ],
   "users": [
@@ -63,6 +72,20 @@
       "userId": 1,
       "tanggalPembayaran": "",
       "id": 2
+    },
+    {
+      "status": "WaitingPayment",
+      "checkoutDate": 1600659824311,
+      "userId": 1,
+      "tanggalPembayaran": "",
+      "id": 3
+    },
+    {
+      "status": "WaitingPayment",
+      "checkoutDate": 1600662573529,
+      "userId": 1,
+      "tanggalPembayaran": "",
+      "id": 4
     }
   ],
   "transactionsDetails": [
@@ -86,6 +109,20 @@
       "price": 1500000,
       "qty": "5",
       "id": 3
+    },
+    {
+      "transactionId": 3,
+      "productId": 1,
+      "price": 2000000,
+      "qty": 5,
+      "id": 4
+    },
+    {
+      "transactionId": 4,
+      "productId": 2,
+      "price": 1500000,
+      "qty": 1,
+      "id": 5
     }
   ]
 }

@@ -30,9 +30,10 @@ import Select from '@material-ui/core/Select';
 class Cart extends Component {
     state = { 
         cart: [],
+        cartFinal:[],
         isLoading: true,
         isOpen: false,
-        age: 0,
+        paymentMethod: 0,
         ccNumber: createRef()
      }
 
@@ -64,6 +65,8 @@ class Cart extends Component {
                     Axios.get(`${API_URL}/carts?userId=${this.props.id}&_expand=product`)
                     .then((res3)=>{
                         this.setState({cart:res3.data, isLoading:false})
+                        let finalTrip = res3.data.filter(val => val.product.endDate > new Date().getTime() )
+                        this.setState({cartFinal:finalTrip})
                     }).catch((err)=>{
                         console.log(err)
                     })
@@ -78,26 +81,45 @@ class Cart extends Component {
     
     renderCart = () => {
         return this.state.cart.map((val, index) => {
-            return(
-                <TableRow key={val.id}>
-                    <TableCell>{index+1}</TableCell>
-                    <TableCell>{val.product.name}</TableCell>
+            if (val.product.endDate < new Date().getTime()){
+               return(
+               <TableRow key={val.id}>
+                    <TableCell style={{color: '#808080'}}>{index+1}</TableCell>
+                    <TableCell style={{color: '#808080'}}>{val.product.name}</TableCell>
                     <TableCell>
                         <div style={{maxWidth:'200px'}}>
                             <img width='100%' height='100%' src={val.product.pict} alt={val.product.name}/>
                         </div>
                     </TableCell>
-                    <TableCell><input type="number" value={val.qty} style={{maxWidth: '30%'}} onChange={(event) => this.changeQtyHandler(event, index)} /></TableCell>
-                    <TableCell>{rupiahFormat(val.product.price)}</TableCell>
-                    <TableCell>{rupiahFormat(val.product.price*val.qty)}</TableCell>
-                    <TableCell><button className="btn btn-danger" onClick={() => this.deleteCart(val.id)}>Del</button></TableCell>
+                    <TableCell style={{color: '#808080'}}>{val.qty}</TableCell>
+                    <TableCell style={{color: '#808080'}}>{rupiahFormat(val.product.price)}</TableCell>
+                    <TableCell style={{color: '#808080'}}>{rupiahFormat(val.product.price*val.qty)}</TableCell>
+                    <TableCell style={{color: '#808080'}}><button className="btn btn-danger" onClick={() => this.deleteCart(val.id)}>Del</button></TableCell>
                 </TableRow>
-            )
+               )
+            }else{
+                return(
+                    <TableRow key={val.id}>
+                        <TableCell>{index+1}</TableCell>
+                        <TableCell>{val.product.name}</TableCell>
+                        <TableCell>
+                            <div style={{maxWidth:'200px'}}>
+                                <img width='100%' height='100%' src={val.product.pict} alt={val.product.name}/>
+                            </div>
+                        </TableCell>
+                        <TableCell><input type="number" value={val.qty} style={{maxWidth: '30%'}} onChange={(event) => this.changeQtyHandler(event, index)} /></TableCell>
+                        <TableCell>{rupiahFormat(val.product.price)}</TableCell>
+                        <TableCell>{rupiahFormat(val.product.price*val.qty)}</TableCell>
+                        <TableCell><button className="btn btn-danger" onClick={() => this.deleteCart(val.id)}>Del</button></TableCell>
+                    </TableRow>
+                )
+            }
+            
         })
     }
 
     renderTotalPrice=()=>{
-        var total=this.state.cart.reduce((total,num)=>{
+        var total = this.state.cartFinal.reduce((total,num)=>{
             return total+(num.product.price*num.qty)
         },0)
         return total
@@ -109,7 +131,6 @@ class Cart extends Component {
         let qtyChange = this.state.cart
         qtyChange[id].qty = event.target.value
         this.setState({cart:qtyChange})
-        console.log(qtyChange[id].qty)
         // this.setState(prevState => ({
         //     cart: prevState.cart.map(
         //         el => el.id === id ? {...el, qty: event.target.value}: el
@@ -154,7 +175,7 @@ class Cart extends Component {
     }
 
     handleChange = (event) => {
-        this.setState({age: event.target.value});
+        this.setState({paymentMethod: event.target.value});
     };
     
     onCheckOutClick=()=>{
@@ -165,7 +186,7 @@ class Cart extends Component {
             tanggalPembayaran:''
         }).then((res)=>{
             var arr=[]
-            this.state.cart.forEach((val)=>{
+            this.state.cartFinal.forEach((val)=>{
                 arr.push(Axios.post(`${API_URL}/transactionsDetails`,{
                     transactionId:res.data.id,
                     productId:val.productId,
@@ -187,7 +208,7 @@ class Cart extends Component {
                         }
                     })
                     .then((res3)=>{
-                        this.setState({cart:res3.data})
+                        this.setState({cart: res3.data, cartFinal: res3.data})
                         this.props.AddcartAction(res3.data)
                     }).catch((err)=>{
                         console.log(err)
@@ -224,7 +245,7 @@ class Cart extends Component {
         if(this.state.isLoading){
             return <div>ABC</div>
         }
-
+        console.log(this.state.cart)
         if(this.props.role === 'user'){
             return ( 
                 <div>
@@ -271,7 +292,7 @@ class Cart extends Component {
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 defaultValue={1}
-                                // value={this.state.age}
+                                // value={this.state.paymentMethod}
                                 onChange={this.handleChange}
                                 style={{width: '100%'}}
                                 >
@@ -279,7 +300,7 @@ class Cart extends Component {
                                 <MenuItem value={2}>Transfer</MenuItem>
                                 </Select>
                             </FormControl>
-                            {this.state.age === 2 ?
+                            {this.state.paymentMethod === 2 ?
                             <TextField
                                 autoFocus
                                 margin="dense"
