@@ -51,7 +51,7 @@ class Cart extends Component {
                 let result = []
                 arr.forEach(function (a) {
                     if (!this[a.productId]) {
-                        this[a.productId] = { productId: a.productId, qty: 0, userId: a.userId, id: a.id};
+                        this[a.productId] = {productId: a.productId, qty: 0, userId: a.userId, id: a.id};
                         result.push(this[a.productId]);
                     }
                     this[a.productId].qty += a.qty;

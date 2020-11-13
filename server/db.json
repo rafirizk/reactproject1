@@ -113,6 +113,14 @@
       "metodePembayaran": "Credit Card",
       "tanggalPembayaran": 1600678484545,
       "id": 5
+    },
+    {
+      "status": "Paid",
+      "checkoutDate": 1600934109262,
+      "userId": 1,
+      "metodePembayaran": "Credit Card",
+      "tanggalPembayaran": 1600934109262,
+      "id": 6
     }
   ],
   "transactionsdetails": [
@@ -164,6 +172,20 @@
       "price": 1500000,
       "qty": 1,
       "id": 7
+    },
+    {
+      "transactionId": 6,
+      "productId": 1,
+      "price": 2000000,
+      "qty": 3,
+      "id": 8
+    },
+    {
+      "transactionId": 6,
+      "productId": 2,
+      "price": 1500000,
+      "qty": 4,
+      "id": 9
     }
   ]
 }
